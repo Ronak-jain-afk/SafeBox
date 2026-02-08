@@ -18,7 +18,7 @@ def run(
         ...,
         help="Path to the script file to execute.",
     ),
-    language: Optional[str] = typer.Option(  # noqa: UP007
+    language: Optional[str] = typer.Option(
         None,
         "--language",
         "-l",
@@ -64,7 +64,6 @@ def run(
         safebox run --memory 512m --timeout 30 server.js
         safebox run -l bash script_no_extension
     """
-    # ── Validate inputs ──────────────────────────────────────────────
     try:
         script_path = resolve_script(script)
     except FileNotFoundError as exc:
@@ -79,7 +78,6 @@ def run(
         print_error(str(exc))
         raise typer.Exit(code=1) from exc
 
-    # ── Execute ──────────────────────────────────────────────────────
     try:
         result = execute(
             script_path,
@@ -91,10 +89,10 @@ def run(
             remove=rm,
         )
     except ExecutionError:
-        raise typer.Exit(code=1)  # noqa: B904
+        raise typer.Exit(code=1)
     except KeyboardInterrupt:
         print_error("Interrupted by user.")
-        raise typer.Exit(code=130)  # noqa: B904
+        raise typer.Exit(code=130)
     except Exception as exc:
         print_error(f"Unexpected error: {exc}")
         raise typer.Exit(code=1) from exc

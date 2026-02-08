@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     from safebox.core.executor import ExecutionResult
 
 
-# ── Detection info ────────────────────────────────────────────────────
 def print_detection_info(language: str, image: str, script_name: str) -> None:
     """Print a compact panel showing the detected language and image."""
     table = Table(show_header=False, box=None, padding=(0, 2))
@@ -28,7 +27,6 @@ def print_detection_info(language: str, image: str, script_name: str) -> None:
     console.print(Panel(table, title="[bold]🔍 Detection", border_style="blue", expand=False))
 
 
-# ── Execution header ─────────────────────────────────────────────────
 def print_execution_header(config: ContainerConfig) -> None:
     """Print a table of resource limits before execution starts."""
     table = Table(show_header=False, box=None, padding=(0, 2))
@@ -45,7 +43,6 @@ def print_execution_header(config: ContainerConfig) -> None:
     console.print()
 
 
-# ── Execution result ─────────────────────────────────────────────────
 def print_result(result: ExecutionResult) -> None:
     """Print the final result banner."""
     console.print()
@@ -82,7 +79,6 @@ def print_result(result: ExecutionResult) -> None:
     )
 
 
-# ── Error message ────────────────────────────────────────────────────
 def print_error(message: str) -> None:
     """Print a styled error panel."""
     console.print(
@@ -95,7 +91,6 @@ def print_error(message: str) -> None:
     )
 
 
-# ── Info message ─────────────────────────────────────────────────────
 def print_info(message: str) -> None:
     """Print a styled info message."""
     console.print(f"  [cyan]ℹ[/]  {message}")

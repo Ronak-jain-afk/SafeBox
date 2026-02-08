@@ -1,13 +1,9 @@
-"""User configuration loader (TOML-based, ~/.safebox/config.toml).
-
-Stub for Phase 3 — provides only defaults for now.
-"""
+"""User configuration loader (TOML-based, ~/.safebox/config.toml)."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-# The user-level config directory
 SAFEBOX_HOME = Path.home() / ".safebox"
 PROFILES_DIR = SAFEBOX_HOME / "profiles"
 LOGS_DIR = SAFEBOX_HOME / "logs"

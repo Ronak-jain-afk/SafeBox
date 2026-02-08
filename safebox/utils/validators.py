@@ -8,7 +8,6 @@ from pathlib import Path
 from safebox.config.constants import SUPPORTED_LANGUAGES
 
 
-# ── Memory ────────────────────────────────────────────────────────────
 _MEMORY_RE = re.compile(r"^(\d+(?:\.\d+)?)\s*([kmgKMG])[bB]?$")
 
 _MEMORY_UNITS = {"k": 1024, "m": 1024**2, "g": 1024**3}
@@ -27,14 +26,12 @@ def validate_memory(value: str) -> str:
             "Expected format like 128m, 512m, 1g, 2g."
         )
     amount, unit = match.group(1), match.group(2).lower()
-    # Ensure at least 4 MB (Docker minimum)
     bytes_val = float(amount) * _MEMORY_UNITS[unit]
     if bytes_val < 4 * 1024 * 1024:
         raise ValueError("Memory limit must be at least 4m (Docker minimum).")
     return f"{amount}{unit}"
 
 
-# ── CPU ───────────────────────────────────────────────────────────────
 def validate_cpus(value: float) -> float:
     """Validate CPU limit (0.1 – 16.0)."""
     if not 0.1 <= value <= 16.0:
@@ -44,7 +41,6 @@ def validate_cpus(value: float) -> float:
     return value
 
 
-# ── Timeout ───────────────────────────────────────────────────────────
 def validate_timeout(value: int) -> int:
     """Validate timeout in seconds (1 – 3600)."""
     if not 1 <= value <= 3600:
@@ -54,7 +50,6 @@ def validate_timeout(value: int) -> int:
     return value
 
 
-# ── Script path ───────────────────────────────────────────────────────
 def validate_script_path(value: str) -> Path:
     """Ensure the script file exists and is readable."""
     path = Path(value).resolve()
@@ -65,7 +60,6 @@ def validate_script_path(value: str) -> Path:
     return path
 
 
-# ── Language ──────────────────────────────────────────────────────────
 def validate_language(value: str) -> str:
     """Validate that *value* is a supported language."""
     lang = value.lower().strip()

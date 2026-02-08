@@ -1,7 +1,4 @@
-"""Environment variable parsing utilities.
-
-Stub for Phase 3 — full --env / --env-file support.
-"""
+"""Environment variable parsing utilities."""
 
 from __future__ import annotations
 
@@ -35,7 +32,6 @@ def load_env_file(path: str | Path) -> dict[str, str]:
                 f"Bad format at {filepath}:{lineno} — expected KEY=VALUE."
             )
         key, _, value = line.partition("=")
-        # Strip optional quotes around value
         value = value.strip().strip("\"'")
         env[key.strip()] = value
 

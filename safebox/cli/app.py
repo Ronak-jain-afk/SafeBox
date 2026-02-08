@@ -18,7 +18,7 @@ app = typer.Typer(
 )
 
 
-def _version_callback(value: bool) -> None:  # noqa: FBT001
+def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"safebox {__version__}")
         raise typer.Exit()
@@ -27,7 +27,7 @@ def _version_callback(value: bool) -> None:  # noqa: FBT001
 @app.callback()
 def main(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable debug logging."),
-    version: Optional[bool] = typer.Option(  # noqa: UP007
+    version: Optional[bool] = typer.Option(
         None,
         "--version",
         "-V",
@@ -40,13 +40,10 @@ def main(
     setup_logging(verbose=verbose)
 
 
-# ── Register subcommands ──────────────────────────────────────────────
-# Import here to avoid circular imports and ensure registration
-from safebox.cli.run import run  # noqa: E402, F401
+from safebox.cli.run import run
 
 app.command()(run)
 
 
-# Allow ``python -m safebox`` to work
 if __name__ == "__main__":
     app()

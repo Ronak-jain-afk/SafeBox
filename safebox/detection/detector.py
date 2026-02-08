@@ -26,19 +26,15 @@ def detect_language(
 
     Raises :class:`DetectionError` if none of the strategies succeed.
     """
-    # 1 — explicit override always wins
     if language_override:
         lang = language_override.lower().strip()
-        # Normalise common aliases
         aliases = {"js": "node", "javascript": "node", "sh": "bash", "shell": "bash"}
         return aliases.get(lang, lang)
 
-    # 2 — file extension
     lang = detect_by_extension(script_path)
     if lang:
         return lang
 
-    # 3 — shebang
     lang = detect_by_shebang(script_path)
     if lang:
         return lang

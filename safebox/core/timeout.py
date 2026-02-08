@@ -29,7 +29,7 @@ def wait_with_timeout(container: Container, timeout: int) -> dict:
         nonlocal result, error
         try:
             result = container.wait()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             error = exc
 
     thread = threading.Thread(target=_wait, daemon=True)
@@ -37,23 +37,22 @@ def wait_with_timeout(container: Container, timeout: int) -> dict:
     thread.join(timeout=timeout)
 
     if thread.is_alive():
-        # Timeout expired — kill the container
         console.print(
             f"\n[bold red]⏱  Timeout![/] Container exceeded {timeout}s limit — killing…"
         )
         try:
             container.kill()
-        except Exception:  # noqa: BLE001
-            pass  # container may have already exited
+        except Exception:
+            pass
         try:
             container.remove(force=True)
-        except Exception:  # noqa: BLE001
+        except Exception:
             pass
         raise ExecutionTimeoutError(
             f"Script execution timed out after {timeout} seconds."
         )
 
     if error is not None:
-        raise error  # propagate unexpected Docker errors
+        raise error
 
-    return result  # type: ignore[return-value]
+    return result

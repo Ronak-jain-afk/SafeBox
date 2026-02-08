@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-# ---------------------------------------------------------------------------
-# Language → default Docker image
-# ---------------------------------------------------------------------------
 LANGUAGE_IMAGE_MAP: dict[str, str] = {
     "python": "python:3.12-slim",
     "node": "node:20-slim",
@@ -17,9 +14,6 @@ LANGUAGE_IMAGE_MAP: dict[str, str] = {
     "perl": "perl:5.38-slim",
 }
 
-# ---------------------------------------------------------------------------
-# File extension → canonical language name
-# ---------------------------------------------------------------------------
 EXTENSION_MAP: dict[str, str] = {
     ".py": "python",
     ".pyw": "python",
@@ -36,9 +30,6 @@ EXTENSION_MAP: dict[str, str] = {
     ".pm": "perl",
 }
 
-# ---------------------------------------------------------------------------
-# Shebang interpreter patterns → canonical language name
-# ---------------------------------------------------------------------------
 SHEBANG_MAP: dict[str, str] = {
     "python": "python",
     "python3": "python",
@@ -53,9 +44,6 @@ SHEBANG_MAP: dict[str, str] = {
     "perl": "perl",
 }
 
-# ---------------------------------------------------------------------------
-# Language → container entrypoint command
-# ---------------------------------------------------------------------------
 ENTRYPOINT_MAP: dict[str, str] = {
     "python": "python",
     "node": "node",
@@ -65,28 +53,16 @@ ENTRYPOINT_MAP: dict[str, str] = {
     "perl": "perl",
 }
 
-# ---------------------------------------------------------------------------
-# Resource defaults (Phase 1)
-# ---------------------------------------------------------------------------
 DEFAULT_MEMORY = "256m"
 DEFAULT_CPUS = 1.0
-DEFAULT_TIMEOUT = 60  # seconds
+DEFAULT_TIMEOUT = 60
 DEFAULT_PIDS_LIMIT = 64
 
-# ---------------------------------------------------------------------------
-# Container sandbox paths
-# ---------------------------------------------------------------------------
 SANDBOX_DIR = "/sandbox"
 SANDBOX_SCRIPT_PATH = "/sandbox/script"
 
-# ---------------------------------------------------------------------------
-# Docker labels for SafeBox-managed containers
-# ---------------------------------------------------------------------------
 SAFEBOX_LABEL = "safebox"
 SAFEBOX_LABEL_VALUE = "true"
 
-# ---------------------------------------------------------------------------
-# Misc
-# ---------------------------------------------------------------------------
-SHEBANG_READ_SIZE = 512  # bytes to read for shebang detection
+SHEBANG_READ_SIZE = 512
 SUPPORTED_LANGUAGES = sorted(set(EXTENSION_MAP.values()))

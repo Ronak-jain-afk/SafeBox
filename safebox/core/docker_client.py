@@ -28,7 +28,7 @@ def get_client() -> DockerClient:
     :class:`DockerNotAvailableError` with a user-friendly message if
     Docker is unreachable.
     """
-    global _client  # noqa: PLW0603
+    global _client
     if _client is not None:
         return _client
 
@@ -53,7 +53,6 @@ def ensure_image(image: str, *, pull: bool = False) -> Image:
     """
     import warnings
 
-    # Suppress noisy docker-credential-desktop warnings
     warnings.filterwarnings("ignore", message=".*docker-credential.*")
 
     client = get_client()
@@ -62,7 +61,7 @@ def ensure_image(image: str, *, pull: bool = False) -> Image:
         try:
             return client.images.get(image)
         except ImageNotFound:
-            pass  # fall through to pull
+            pass
 
     with console.status(f"[bold cyan]Pulling image [yellow]{image}[/]…"):
         try:

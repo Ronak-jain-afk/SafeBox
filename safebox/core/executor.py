@@ -31,7 +31,7 @@ class ExecutionResult:
     """Outcome of a sandboxed script run."""
 
     exit_code: int
-    duration: float  # seconds
+    duration: float
     timed_out: bool = False
     output: str = ""
     language: str = ""
@@ -42,7 +42,7 @@ class ExecutionError(Exception):
     """Generic execution-level error."""
 
 
-def execute(  # noqa: PLR0913
+def execute(
     script_path: Path,
     *,
     language: str | None = None,
@@ -66,14 +66,12 @@ def execute(  # noqa: PLR0913
     8. Collect result & clean up
     """
 
-    # ── 1. Detect language ───────────────────────────────────────────
     try:
         lang = detect_language(script_path, language_override=language)
     except DetectionError as exc:
         print_error(str(exc))
         raise ExecutionError(str(exc)) from exc
 
-    # ── 2. Resolve image ─────────────────────────────────────────────
     image = LANGUAGE_IMAGE_MAP.get(lang)
     if image is None:
         msg = (
@@ -83,13 +81,10 @@ def execute(  # noqa: PLR0913
         print_error(msg)
         raise ExecutionError(msg)
 
-    # ── 3. Show detection info ───────────────────────────────────────
     print_detection_info(lang, image, script_path.name)
 
-    # ── 4. Pull image ────────────────────────────────────────────────
     ensure_image(image)
 
-    # ── 5. Build config ──────────────────────────────────────────────
     config = ContainerConfig(
         image=image,
         language=lang,
@@ -105,24 +100,21 @@ def execute(  # noqa: PLR0913
 
     print_execution_header(config)
 
-    # ── 6. Create & start container ──────────────────────────────────
     client = get_client()
     kwargs = build_container_kwargs(config)
 
     container = client.containers.run(**kwargs)
     start_time = time.monotonic()
 
-    # ── 7. Stream output ─────────────────────────────────────────────
     output_chunks: list[str] = []
     try:
         for chunk in container.logs(stream=True, follow=True):
             text = chunk.decode("utf-8", errors="replace")
             console.print(text, end="", highlight=False)
             output_chunks.append(text)
-    except Exception:  # noqa: BLE001
-        pass  # container may have been killed (timeout)
+    except Exception:
+        pass
 
-    # ── 8. Wait & collect result ─────────────────────────────────────
     timed_out = False
     exit_code = 1
 
@@ -131,16 +123,15 @@ def execute(  # noqa: PLR0913
         exit_code = wait_result.get("StatusCode", 1)
     except ExecutionTimeoutError:
         timed_out = True
-        exit_code = 124  # conventional timeout exit code
+        exit_code = 124
 
     duration = time.monotonic() - start_time
 
-    # ── 9. Cleanup ───────────────────────────────────────────────────
     if remove and not timed_out:
         try:
             container.remove(force=True)
-        except Exception:  # noqa: BLE001
-            pass  # already removed or doesn't exist
+        except Exception:
+            pass
 
     result = ExecutionResult(
         exit_code=exit_code,

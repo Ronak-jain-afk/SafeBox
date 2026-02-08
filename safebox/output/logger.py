@@ -1,7 +1,4 @@
-"""Structured logging with Rich handler.
-
-Stub for Phase 4 polish — provides basic logging setup.
-"""
+"""Structured logging with Rich handler."""
 
 from __future__ import annotations
 
