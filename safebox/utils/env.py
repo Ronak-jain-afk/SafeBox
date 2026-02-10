@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def parse_env_pair(pair: str) -> tuple[str, str]:
-    """Parse a ``KEY=VALUE`` string into a (key, value) tuple."""
+    """Parse a KEY=VALUE string into a (key, value) tuple."""
     if "=" not in pair:
         raise ValueError(f"Invalid env format: '{pair}'. Expected KEY=VALUE.")
     key, _, value = pair.partition("=")
