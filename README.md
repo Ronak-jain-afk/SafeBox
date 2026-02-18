@@ -187,3 +187,5 @@ SafeBox-CLI/
 ## License
 
 MIT
+
+> **Note:** This README and code documentation were generated with assistance from AI.
